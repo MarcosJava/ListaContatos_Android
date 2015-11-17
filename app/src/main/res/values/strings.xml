@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ListaContatos</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_add_contato">AddContato</string>
+    <string name="lb_nome">Nome</string>
+    <string name="lb_telefone">Telefone</string>
+    <string name="lb_email">Email</string>
+    <string name="lb_endereco">Endereco</string>
+    <string name="lb_data_especiais">Datas Especiais</string>
+    <string name="lb_grupos">Grupos</string>
+    <string name="lb_salvar">Salvar</string>
+    <string name="lb_alterar">Alterar</string>
+    <string name="lb_excluir">Excluir</string>
+</resources>

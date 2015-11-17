@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.mrcsfelipe.listacontatos.AddContato">
+
+
+    <item android:id="@+id/mn_acao_salvar"
+        android:title="@string/lb_salvar"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/mn_acao_excluir"
+        android:title="@string/lb_excluir"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+
+</menu>
