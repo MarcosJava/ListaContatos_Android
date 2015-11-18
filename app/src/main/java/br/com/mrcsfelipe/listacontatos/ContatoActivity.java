@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import br.com.mrcsfelipe.listacontatos.dominio.ContatoDao;
 import br.com.mrcsfelipe.listacontatos.database.DataBase;
+import br.com.mrcsfelipe.listacontatos.dominio.entidade.Contato;
 
 public class ContatoActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -24,7 +25,7 @@ public class ContatoActivity extends AppCompatActivity implements View.OnClickLi
     private EditText edtPesquisa;
     private ListView lstContatos;
 
-    private ArrayAdapter<String> adpContatos;
+    private ArrayAdapter<Contato> adpContatos;
 
     private DataBase dataBase;
     private SQLiteDatabase conn;
@@ -51,10 +52,7 @@ public class ContatoActivity extends AppCompatActivity implements View.OnClickLi
 
 
             adpContatos = contatoDao.buscaContatos(this);
-
             lstContatos.setAdapter(adpContatos);
-
-
 
         }catch (SQLException ex){
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -70,7 +68,16 @@ public class ContatoActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
 
         Intent intent = new Intent(ContatoActivity.this, AddContato.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        adpContatos = contatoDao.buscaContatos(this);
+        lstContatos.setAdapter(adpContatos);
 
     }
 

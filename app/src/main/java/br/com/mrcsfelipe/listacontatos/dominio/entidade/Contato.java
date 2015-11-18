@@ -112,4 +112,25 @@ public class Contato {
     public void setGrupos(String grupos) {
         this.grupos = grupos;
     }
+
+    @Override
+    public String toString() {
+        /*
+        return "Contato{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", tipoTelefone='" + tipoTelefone + '\'' +
+                ", email='" + email + '\'' +
+                ", tipoEmail='" + tipoEmail + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", tipoEndereco='" + tipoEndereco + '\'' +
+                ", dataEspeciais=" + dataEspeciais +
+                ", tipoDataEspeciais='" + tipoDataEspeciais + '\'' +
+                ", grupos='" + grupos + '\'' +
+                '}';
+                */
+
+        return  nome + " -- " + telefone;
+    }
 }

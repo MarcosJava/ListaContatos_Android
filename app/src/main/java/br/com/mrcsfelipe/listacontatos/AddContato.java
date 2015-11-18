@@ -1,6 +1,7 @@
 package br.com.mrcsfelipe.listacontatos;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import br.com.mrcsfelipe.listacontatos.database.DataBase;
@@ -44,6 +49,9 @@ public class AddContato extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contato);
+
+
+        this.contato = new Contato();
 
         this.edtNome = (EditText) findViewById(R.id.edt_nome);
         this.edtTelefone = (EditText) findViewById(R.id.edt_telefone);
@@ -104,6 +112,12 @@ public class AddContato extends AppCompatActivity {
         this.adpTipoDataEspeciais.add("Data Comemorativa");
         this.adpTipoDataEspeciais.add("Outros");
 
+
+        ExibeDataListenner exibeDataListenner = new ExibeDataListenner();
+        this.edtDataEspeciais.setOnClickListener(exibeDataListenner);
+        this.edtDataEspeciais.setOnFocusChangeListener(exibeDataListenner);
+
+
         try{
             dataBase = new DataBase(this);
             conn = dataBase.getWritableDatabase();
@@ -137,7 +151,7 @@ public class AddContato extends AppCompatActivity {
             case R.id.mn_acao_salvar:
 
                 if(contato == null){
-                    inserir();
+                        inserir();
 
                 }else {
 
@@ -156,27 +170,70 @@ public class AddContato extends AppCompatActivity {
     private void inserir(){
 
         try{
-            contato  = new Contato();
+
 
             contato.setNome(edtNome.getText().toString());
             contato.setTelefone(edtTelefone.getText().toString());
             contato.setEmail(edtEmail.getText().toString());
             contato.setEndereco(edtEndereco.getText().toString());
-            contato.setDataEspeciais(new Date());
             contato.setGrupos(edtGrupos.getText().toString());
 
-            contato.setTipoTelefone("");
-            contato.setTipoEmail("");
-            contato.setTipoEndereco("");
-            contato.setTipoDataEspeciais("");
+            contato.setTipoTelefone(String.valueOf(spnTipoTelefone.getSelectedItemPosition()));
+            contato.setTipoEmail(String.valueOf(spnTipoEmail.getSelectedItemPosition()));
+            contato.setTipoEndereco(String.valueOf(spnTipoEndereco.getSelectedItemPosition()));
+            contato.setTipoDataEspeciais(String.valueOf( spnTipoDataEspeciais.getSelectedItemPosition() ));
 
 
             contatoDao.inserir(contato);
 
             Toast.makeText(this,"Cadastrado com Sucesso", Toast.LENGTH_SHORT);
         }catch (Exception e){
+            e.printStackTrace();
             Toast.makeText(this,"Ocorreu um erro ao inserir", Toast.LENGTH_SHORT);
         }
 
+    }
+
+    private void exibeData(){
+
+        DatePickerDialog datePickerDialog =
+                new DatePickerDialog(this, new SelecionaDataListenner(), 2015, 4, 26);
+
+        datePickerDialog.show();
+    }
+
+    private class ExibeDataListenner implements View.OnClickListener, View.OnFocusChangeListener{
+
+        @Override
+        public void onClick(View v) {
+            exibeData();
+
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+
+            //Se tiver focus vai ativar a exibeData
+            if(hasFocus)
+                exibeData();
+        }
+    }
+
+    private class SelecionaDataListenner implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+
+
+            Date date = calendar.getTime();
+
+            DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            String data = df.format(date);
+
+            edtDataEspeciais.setText(data);
+            contato.setDataEspeciais(date);
+        }
     }
 }
